@@ -18,6 +18,9 @@ namespace cws {
 			~IApp();
 			int run();
 
+			// utils
+			void close();
+
 			// getters
 			io::EventHandler* get_event_handler();
 		protected:

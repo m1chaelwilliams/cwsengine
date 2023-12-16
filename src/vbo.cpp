@@ -16,21 +16,10 @@ void VBO::bind() {
 	glBindBuffer(m_type, m_id);
 }
 
-void VBO::buffer_data(GLuint* data, GLsizei size_in_bytes) {
+void VBO::buffer_data(const void* data, GLsizei size_in_bytes) {
 	glBufferData(m_type, size_in_bytes, data, GL_STATIC_DRAW);
 }
-void VBO::buffer_data(float* data, GLsizei size_in_bytes) {
-	glBufferData(m_type, size_in_bytes, data, GL_STATIC_DRAW);
-}
-void VBO::buffer_data(glm::vec2* data, GLsizei size_in_bytes) {
-	glBufferData(m_type, size_in_bytes, data, GL_STATIC_DRAW);
-}
-void VBO::buffer_data(glm::vec3* data, GLsizei size_in_bytes) {
-	glBufferData(m_type, size_in_bytes, data, GL_STATIC_DRAW);
-}
-void VBO::buffer_data(glm::vec4* data, GLsizei size_in_bytes) {
-	glBufferData(m_type, size_in_bytes, data, GL_STATIC_DRAW);
-}
+
 
 void VBO::dispose() {
 	m_vbos.remove(m_id);

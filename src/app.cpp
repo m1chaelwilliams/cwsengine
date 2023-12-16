@@ -1,5 +1,10 @@
 #include "app.h"
 #include "debug.h"
+#include "vao.h"
+#include "vbo.h"
+#include "shader.h"
+#include "shaderprogram.h"
+#include "texture.h"
 
 #include <typeinfo>
 
@@ -82,6 +87,9 @@ bool IApp::init_window() {
 
 bool IApp::init_graphics() {
 	glfwMakeContextCurrent(m_window_ptr);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);  // Adjust version as needed
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         return false;
@@ -93,8 +101,18 @@ bool IApp::init_graphics() {
 }
 
 void IApp::clean_up() {
+	CWS_LOGLN("Disposing graphics...");
+
+	graphics::VAO::dispose_all();
+	graphics::VBO::dispose_all();
+	graphics::Shader::dispose_all();
+	graphics::ShaderProgram::dispose_all();
+	graphics::Texture::dispose_all();
+
 	// unload internals
 	scene_manager.clear();
+
+	CWS_LOGLN("Disposing window...");
 
 	// unload glfw
 	glfwDestroyWindow(m_window_ptr);
@@ -115,6 +133,12 @@ void IApp::on_key_callback(GLFWwindow* window_ptr, int key, int scancode, int ac
 	IApp* instance = static_cast<IApp*>(glfwGetWindowUserPointer(window_ptr));
 
 	instance->m_event_handler.on_event(key, action, scancode);
+}
+
+// utils
+
+void IApp::close() {
+	glfwSetWindowShouldClose(m_window_ptr, 1);
 }
 
 // getters

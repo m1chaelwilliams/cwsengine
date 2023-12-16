@@ -10,7 +10,7 @@ namespace cws::graphics {
 		public:
 			VAO();
 			void bind();
-			void link_buffer(int location, int size, int offset, int stride);
+			void link_buffer(int location, int size, int stride, int offset);
 			GLuint get_id() const;
 
 			static void unbind();

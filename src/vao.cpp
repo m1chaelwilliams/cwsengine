@@ -43,7 +43,7 @@ void VAO::link_buffer(int location, int size, int stride, int offset) {
 		location,
 		size,
 		GL_FLOAT,
-		false,
+		GL_FALSE,
 		stride * sizeof(GLfloat),
 		(void*)(offset * sizeof(GLfloat))
 	);

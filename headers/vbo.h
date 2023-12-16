@@ -4,6 +4,9 @@
 #include <glm/glm.hpp>
 #include <glad/glad.h>
 #include <list>
+#include <vector>
+
+#include "vertex.h"
 
 namespace cws::graphics {
 
@@ -11,11 +14,7 @@ namespace cws::graphics {
 		public:
 			VBO(GLenum buffer_type);
 			
-			void buffer_data(GLuint* data, GLsizei size_in_bytes);
-			void buffer_data(float* data, GLsizei size_in_bytes);
-			void buffer_data(glm::vec2* data, GLsizei size_in_bytes);
-			void buffer_data(glm::vec3* data, GLsizei size_in_bytes);
-			void buffer_data(glm::vec4* data, GLsizei size_in_bytes);
+			void buffer_data(const void* data, GLsizei size_in_bytes);
 
 			void bind();
 

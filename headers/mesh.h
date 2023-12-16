@@ -2,33 +2,25 @@
 #define CWS_MESH_H
 
 #include <glad/glad.h>
+#include <vector>
 
-namespace cws::data {
+#include "vertex.h"
+
+namespace cws::renderdata {
 
 	class Mesh {
 		public:
 			Mesh(
-				GLuint vao,
-				GLuint position_vbo,
-				GLuint texture_vbo,
-				GLsizei vertex_count
-			) :
-				m_vao(vao),
-				m_position_vbo(position_vbo),
-				m_texture_vbo(texture_vbo),
-				m_vertex_count(vertex_count)
-			{}
-
-		GLuint get_vao() const;
-		GLuint get_position_vbo() const;
-		GLuint get_texture_vbo() const;
-		GLsizei get_vertex_count() const;
-
+				std::vector<Vertex>& vertices,
+				std::vector<GLuint>& indices
+			);
+			GLuint get_vao() const {return m_vao;}
+			GLuint get_ebo() const {return m_ebo;}
+			GLuint get_vertex_count() const {return m_vertex_count;}
 		private:
-			GLuint m_vao;
-			GLuint m_position_vbo;
-			GLuint m_texture_vbo;
-			GLsizei m_vertex_count;
+			std::vector<Vertex> m_vertices;
+			std::vector<GLuint> m_indices;
+			GLuint m_vao, m_ebo, m_vertex_count;
 	};
 
 };

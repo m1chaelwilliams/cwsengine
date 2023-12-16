@@ -28,6 +28,9 @@ void SceneManager::push(IScene* scene_ptr) {
 }
 
 IScene* SceneManager::peek() const {
+	if (!m_top) {
+		return nullptr;
+	}
 	return m_top->scene_ptr;
 }
 
