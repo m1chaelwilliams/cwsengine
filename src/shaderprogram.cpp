@@ -70,7 +70,7 @@ GLint ShaderProgram::find_uniform(const char* uniform_name) {
 	return uniform_location;
 }
 
-bool ShaderProgram::put_uniform_mat3(const char* uniform_name, glm::mat3& mat) {
+bool ShaderProgram::put_uniform_mat3(const char* uniform_name, const glm::mat3& mat) {
 	GLint uniform_location = find_uniform(uniform_name);
 	if (uniform_location == -1) {
 		CWS_LOGLN("Failed to find uniform: " << uniform_name);
@@ -81,7 +81,7 @@ bool ShaderProgram::put_uniform_mat3(const char* uniform_name, glm::mat3& mat) {
 	return true;
 }
 
-bool ShaderProgram::put_uniform_mat4(const char* uniform_name, glm::mat4& mat) {
+bool ShaderProgram::put_uniform_mat4(const char* uniform_name, const glm::mat4& mat) {
 	GLint uniform_location = find_uniform(uniform_name);
 	if (uniform_location == -1) {
 		CWS_LOGLN("Failed to find uniform: " << uniform_name);

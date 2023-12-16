@@ -5,6 +5,8 @@
 #include "shader.h"
 #include "shaderprogram.h"
 #include "texture.h"
+#include "io/mouse.h"
+#include "io/keyboard.h"
 
 #include <typeinfo>
 
@@ -78,7 +80,8 @@ bool IApp::init_window() {
 
 	glfwSetWindowUserPointer(m_window_ptr, this);
 	glfwSetFramebufferSizeCallback(m_window_ptr, on_frame_buffer_size_callback);
-	glfwSetKeyCallback(m_window_ptr, on_key_callback);
+	glfwSetKeyCallback(m_window_ptr, io::Keyboard::on_event);
+	glfwSetCursorPosCallback(m_window_ptr, io::Mouse::_on_cursor_move_callback);
 
 	CWS_LOGLN("Init window success!");
 
@@ -129,20 +132,8 @@ void IApp::on_frame_buffer_size_callback(GLFWwindow* window_ptr, int width, int 
 	instance->on_resize(width, height);
 }
 
-void IApp::on_key_callback(GLFWwindow* window_ptr, int key, int scancode, int action, int mods) {
-	IApp* instance = static_cast<IApp*>(glfwGetWindowUserPointer(window_ptr));
-
-	instance->m_event_handler.on_event(key, action, scancode);
-}
-
 // utils
 
 void IApp::close() {
 	glfwSetWindowShouldClose(m_window_ptr, 1);
-}
-
-// getters
-
-io::EventHandler* IApp::get_event_handler() {
-	return &m_event_handler;
 }

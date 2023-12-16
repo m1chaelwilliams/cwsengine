@@ -10,6 +10,9 @@
 #include "texture.h"
 #include "mesh.h"
 #include "renderer.h"
+#include "camera.h"
+#include "io/mouse.h"
+#include "io/keyboard.h"
 #include "fileutils.h"
 
 #endif

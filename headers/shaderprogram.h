@@ -18,8 +18,8 @@ namespace cws::graphics {
 			void use_program();
 			void dispose();
 			GLint find_uniform(const char* uniform_name);
-			bool put_uniform_mat4(const char* uniform_name, glm::mat4& mat);
-			bool put_uniform_mat3(const char* uniform_name, glm::mat3& mat);
+			bool put_uniform_mat4(const char* uniform_name, const glm::mat4& mat);
+			bool put_uniform_mat3(const char* uniform_name, const glm::mat3& mat);
 
 			static void dispose_all();
 		private:

@@ -41,7 +41,14 @@ class ExampleScene : public cws::IScene {
 
 			m_model = new cws::renderdata::RawModel(
 				*m_plane,
-				glm::vec3(0.0f, 0.0f, 0.0f)
+				glm::vec3(0.0f, 0.0f, 2.0f)
+			);
+
+			m_model2 = new cws::renderdata::RawModel(
+				*m_plane,
+				glm::vec3(0.0f, -2.0f, -2.0f),
+				glm::vec3(90.0f, 0.0f, 0.0f),
+				glm::vec3(10.0f, 10.0f, 10.0f)
 			);
 
 			m_model_mat = glm::mat4(1.0f);
@@ -57,81 +64,81 @@ class ExampleScene : public cws::IScene {
 
 			m_position = glm::vec3(0.0f, 0.0f, 0.0f);
 
-			m_projection_mat = glm::perspective(
-				glm::radians(45.0f),
-				600.0f / 400.0f,
-				0.1f,
-				100.0f
+			m_camera = new cws::world::Camera(
+				glm::vec3(0.0f, 0.0f, 0.0f),
+				90.0f
 			);
 		}
 		void on_unload() override {
 			delete m_plane;
 			delete m_model;
+			delete m_model2;
+			delete m_camera;
 		}
 		void on_update() override {
-			if (m_app_ptr->get_event_handler()->is_key_down(GLFW_KEY_DOWN)) {
-				CWS_LOGLN("moving backwards");
-				m_position.z -= 0.01f;
+			if (cws::io::Keyboard::is_key_down(GLFW_KEY_S)) {
+				m_camera->position -= 0.01f * m_camera->get_front_vector();
 			}
-			if (m_app_ptr->get_event_handler()->is_key_down(GLFW_KEY_UP)) {
-				CWS_LOGLN("moving forwards");
-				m_position.z += 0.01f;
+			if (cws::io::Keyboard::is_key_down(GLFW_KEY_W)) {
+				m_camera->position += 0.01f * m_camera->get_front_vector();
 			}
-			if (m_app_ptr->get_event_handler()->is_key_down(GLFW_KEY_LEFT)) {
-				CWS_LOGLN("moving left");
-				m_position.x -= 0.01f;
+			if (cws::io::Keyboard::is_key_down(GLFW_KEY_A)) {
+				m_camera->position -= 0.01f * m_camera->get_right_vector();
 			}
-			if (m_app_ptr->get_event_handler()->is_key_down(GLFW_KEY_RIGHT)) {
-				CWS_LOGLN("moving right");
-				m_position.x += 0.01f;
+			if (cws::io::Keyboard::is_key_down(GLFW_KEY_D)) {
+				m_camera->position += 0.01f * m_camera->get_right_vector();
 			}
-			if (m_app_ptr->get_event_handler()->is_key_pressed(GLFW_KEY_Q)) {
+			if (cws::io::Keyboard::is_key_down(GLFW_KEY_LEFT_SHIFT)) {
+				m_camera->position.y -= 0.01f;
+			}
+			if (cws::io::Keyboard::is_key_down(GLFW_KEY_SPACE)) {
+				m_camera->position.y += 0.01f;
+			}
+			if (cws::io::Keyboard::is_key_down(GLFW_KEY_Q)) {
 				m_app_ptr->close();
 			}
-			if (m_app_ptr->get_event_handler()->is_key_down(GLFW_KEY_SPACE)) {
-				m_model->scale.x += 0.001f;
-			}
 
-			// m_model_mat = glm::rotate(m_model_mat, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			// // m_model_mat = glm::translate(m_model_mat, glm::vec3(0.001f, 0.0f, 0.0f));
-			
-			m_view_mat = glm::lookAt(
-				m_position,
-				m_position + glm::vec3(0.0f, 0.0f, 1.0f),
-				glm::vec3(0.0f, 1.0f, 0.0f)
-			);
+			m_camera->update(cws::io::Mouse::x, cws::io::Mouse::y);
 
-			glm::mat4 model_mat = glm::mat4(1.0f);
+			CWS_LOGLN(cws::io::Mouse::x << " " << cws::io::Mouse::y);
 
-			m_program.put_uniform_mat4("model", model_mat);
-			m_program.put_uniform_mat4("view", m_view_mat);
-			m_program.put_uniform_mat4("projection", m_projection_mat);
+			m_program.put_uniform_mat4("view", m_camera->get_view_matrix());
+			m_program.put_uniform_mat4("projection", m_camera->get_projection_matrix());
 		}
 		void on_draw() override {
 			m_renderer.clear(glm::vec4(0.4f, 0.6f, 1.0f, 1.0f), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			m_texture.bind();
-			// m_renderer.render(m_program, *m_model);
-			m_renderer.render(m_program, *m_plane);
+			m_renderer.render(m_program, *m_model);
+			m_renderer.render(m_program, *m_model2);
+			// m_renderer.render(m_program, *m_plane);
 		}
 	private:
 		glm::vec3 m_position;
 		cws::IApp* m_app_ptr;
+		cws::world::Camera* m_camera;
 		cws::graphics::Renderer m_renderer;
 		cws::graphics::Texture m_texture;
 		cws::renderdata::Mesh* m_plane;
 		cws::renderdata::RawModel* m_model;
+		cws::renderdata::RawModel* m_model2;
 		glm::mat4 m_model_mat;
 		glm::mat4 m_view_mat;
 		glm::mat4 m_projection_mat;
 		cws::graphics::ShaderProgram m_program;
+
+		float delta;
 };
 
 class ExampleApp : public cws::IApp {
+	public:
+		ExampleApp(cws::settings::WindowSettings& s) : IApp(s) {}
 	protected:
 		void on_load() override {
 			scene_manager.push(new ExampleScene(this));
 			scene_manager.peek()->on_load();
+
+			glfwSetInputMode(m_window_ptr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		}
 		void on_unload() override {
 			scene_manager.peek()->on_unload();
@@ -153,5 +160,9 @@ class ExampleApp : public cws::IApp {
 };
 
 int main() {
-	return ExampleApp().run();
+	cws::settings::WindowSettings settings;
+	settings.width = 1280;
+	settings.height = 720;
+
+	return ExampleApp(settings).run();
 }
