@@ -6,7 +6,7 @@
 #include <list>
 #include <vector>
 
-#include "vertex.h"
+#include "data/vertex.h"
 
 namespace cws::graphics {
 

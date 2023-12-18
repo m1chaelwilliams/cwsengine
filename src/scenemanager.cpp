@@ -1,6 +1,6 @@
-#include "scenemanager.h"
-#include "scene.h"
-#include "debug.h"
+#include "world/scenemanager.h"
+#include "world/scene.h"
+#include "utils/debug.h"
 
 using namespace cws;
 

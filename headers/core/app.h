@@ -4,8 +4,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "scenemanager.h"
-#include "windowconfig.h"
+#include "world/world.h"
+#include "utils/utils.h"
+#include "graphics/graphics.h"
 
 namespace cws {
 	class IApp {

@@ -1,5 +1,5 @@
-#include "shader.h"
-#include "debug.h"
+#include "graphics/shader.h"
+#include "utils/debug.h"
 
 using namespace cws::graphics;
 

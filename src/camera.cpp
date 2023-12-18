@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "world/camera.h"
 
 using namespace cws::world;
 
@@ -21,7 +21,7 @@ Camera::Camera(
 	m_first_move(true)
 {
 	m_up_vector = glm::vec3(0.0f, 1.0f, 0.0f);
-	m_front_vector = glm::vec3(0.0f, 0.0f, -1.0f);
+	m_front_vector = glm::vec3(0.0f, 0.0f, 1.0f);
 	update_projection_matrix();
 }
 
@@ -62,15 +62,21 @@ void Camera::update(float x, float y) {
 
 void Camera::set_fov(float fov) {
 	m_fov = fov;
+
+	update_projection_matrix();
 }
 
 void Camera::set_aspect(float aspect) {
 	m_aspect_ratio = aspect;
+
+	update_projection_matrix();
 }
 
 void Camera::set_view_distance(float near, float far) {
 	m_near = near;
 	m_far = far;
+
+	update_projection_matrix();
 }
 
 void Camera::update_projection_matrix() {
@@ -102,4 +108,25 @@ const glm::vec3& Camera::get_front_vector() const {
 
 const glm::vec3& Camera::get_right_vector() const {
 	return m_right_vector;
+}
+
+float Camera::get_fov() const {
+	return m_fov;
+}
+
+float Camera::get_aspect() const {
+	return m_aspect_ratio;
+}
+
+float Camera::get_near() const {
+	return m_near;
+}
+
+float Camera::get_far() const {
+	return m_far;
+}
+
+void Camera::set_last_mouse_pos(float x, float y) {
+	m_last_x = x;
+	m_last_y = y;
 }

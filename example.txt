@@ -1,0 +1,61 @@
+struct Mesh {
+	vector<Vertex> vertices;
+
+	Mesh(const vector<Vertex>& v) : vertices(v) {}
+}
+
+vector<Vertex> load_vertices() {
+	vector<Vertex> v;
+
+	for (int i = 0; i < 1000000; i++) {
+		for (int j = 0; j < 1000000; j++) {
+			v.emplace_back(Vertex{1,2,3});
+		}
+	}
+
+	return v;
+}
+
+class Scene {
+
+	void on_load() {
+		
+		vector<Vertex> vertices = load_vertices();
+
+		m_meshes.emplace_back(vertices);
+
+	}
+
+	void on_draw() {
+
+		draw(mesh);
+
+	}
+
+	private:
+		vector<Mesh> m_meshes;
+
+}
+
+
+
+
+
+
+class Bar {
+	public:
+		Bar(const Foo& f) {
+			this->f = f;
+		}
+	private:
+		Foo f;
+}
+
+class Bar {
+	public:
+		Bar(Foo f) {
+			this->f = f;
+		}
+	private:
+		Foo f;
+}

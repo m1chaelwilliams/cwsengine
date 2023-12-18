@@ -1,5 +1,5 @@
-#include "vbo.h"
-#include "debug.h"
+#include "graphics/vbo.h"
+#include "utils/debug.h"
 
 using namespace cws::graphics;
 
@@ -35,7 +35,7 @@ GLuint VBO::get_id() const {
 }
 
 void VBO::dispose_all() {
-	CWS_LOGLN("--- Deleting VAOs ---");
+	CWS_LOGLN("--- Deleting VBOs ---");
 
 	for (auto& vbo : m_vbos) {
 		glDeleteBuffers(1, &vbo);

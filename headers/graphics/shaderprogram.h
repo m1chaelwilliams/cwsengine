@@ -6,7 +6,7 @@
 #include <list>
 #include <map>
 
-#include "shader.h"
+#include "graphics/shader.h"
 
 namespace cws::graphics {
 
@@ -18,8 +18,11 @@ namespace cws::graphics {
 			void use_program();
 			void dispose();
 			GLint find_uniform(const char* uniform_name);
-			bool put_uniform_mat4(const char* uniform_name, const glm::mat4& mat);
-			bool put_uniform_mat3(const char* uniform_name, const glm::mat3& mat);
+			bool put_uniform_float(const char* uniform_name, float value);
+			bool put_uniform_vec2(const char* uniform_name, const glm::vec2& vec);
+			bool put_uniform_vec3(const char* uniform_name, const glm::vec3& vec);
+			bool put_uniform_mat4(const char* uniform_name, const glm::mat4& mat, bool transpose = GL_FALSE);
+			bool put_uniform_mat3(const char* uniform_name, const glm::mat3& mat, bool transpose = GL_FALSE);
 
 			static void dispose_all();
 		private:

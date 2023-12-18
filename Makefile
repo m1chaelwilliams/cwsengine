@@ -6,7 +6,7 @@ INCLUDE_DIRS = -Iinclude -Iheaders
 
 LIB_DIRS = -Llib
 
-LIBS = -lglfw3 -lopengl32 -lgdi32
+LIBS = -lglfw3 -lopengl32 -lgdi32 -lassimp.dll
 
 SRC = $(wildcard src/*.cpp) src/glad.c
 

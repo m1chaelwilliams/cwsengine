@@ -1,12 +1,5 @@
-#include "app.h"
-#include "debug.h"
-#include "vao.h"
-#include "vbo.h"
-#include "shader.h"
-#include "shaderprogram.h"
-#include "texture.h"
-#include "io/mouse.h"
-#include "io/keyboard.h"
+#include "core/app.h"
+#include "io/io.h"
 
 #include <typeinfo>
 
@@ -46,6 +39,11 @@ int IApp::run() {
 		glfwPollEvents();
 		
 		on_update();
+
+		io::Keyboard::m_keys_pressed.clear();
+		io::Mouse::m_buttons_pressed.clear();
+		io::Mouse::scroll = 0;
+
 		on_draw();
 
 		glfwSwapBuffers(m_window_ptr);
@@ -78,10 +76,14 @@ bool IApp::init_window() {
 		return false;
 	}
 
+	io::Mouse::m_window_context = m_window_ptr;
+
 	glfwSetWindowUserPointer(m_window_ptr, this);
 	glfwSetFramebufferSizeCallback(m_window_ptr, on_frame_buffer_size_callback);
 	glfwSetKeyCallback(m_window_ptr, io::Keyboard::on_event);
-	glfwSetCursorPosCallback(m_window_ptr, io::Mouse::_on_cursor_move_callback);
+	glfwSetCursorPosCallback(m_window_ptr, io::Mouse::on_cursor_move_callback);
+	glfwSetMouseButtonCallback(m_window_ptr, io::Mouse::on_mouse_button_callback);
+	glfwSetScrollCallback(m_window_ptr, io::Mouse::on_scroll_wheel_callback);
 
 	CWS_LOGLN("Init window success!");
 

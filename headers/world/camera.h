@@ -24,10 +24,15 @@ namespace cws::world {
 			const glm::mat4& get_projection_matrix() const;
 			const glm::vec3& get_front_vector() const;
 			const glm::vec3& get_right_vector() const;
+			float get_fov() const;
+			float get_aspect() const;
+			float get_near() const;
+			float get_far() const;
 
 			void set_fov(float fov);
 			void set_aspect(float aspect);
 			void set_view_distance(float near, float far);
+			void set_last_mouse_pos(float x, float y); // used for going from normal to grabbed to avoid jumps
 		private:
 			void update_projection_matrix();
 

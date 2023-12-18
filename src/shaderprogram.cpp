@@ -1,5 +1,5 @@
-#include "shaderprogram.h"
-#include "debug.h"
+#include "graphics/shaderprogram.h"
+#include "utils/debug.h"
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace cws::graphics;
@@ -70,24 +70,57 @@ GLint ShaderProgram::find_uniform(const char* uniform_name) {
 	return uniform_location;
 }
 
-bool ShaderProgram::put_uniform_mat3(const char* uniform_name, const glm::mat3& mat) {
+bool ShaderProgram::put_uniform_mat3(const char* uniform_name, const glm::mat3& mat, bool transpose) {
 	GLint uniform_location = find_uniform(uniform_name);
 	if (uniform_location == -1) {
 		CWS_LOGLN("Failed to find uniform: " << uniform_name);
 		return false;
 	}
 
-	glUniformMatrix3fv(uniform_location, 1, GL_TRUE, glm::value_ptr(mat));
+	glUniformMatrix3fv(uniform_location, 1, transpose, glm::value_ptr(mat));
 	return true;
 }
 
-bool ShaderProgram::put_uniform_mat4(const char* uniform_name, const glm::mat4& mat) {
+bool ShaderProgram::put_uniform_mat4(const char* uniform_name, const glm::mat4& mat, bool transpose) {
 	GLint uniform_location = find_uniform(uniform_name);
 	if (uniform_location == -1) {
 		CWS_LOGLN("Failed to find uniform: " << uniform_name);
 		return false;
 	}
 
-	glUniformMatrix4fv(uniform_location, 1, GL_TRUE, glm::value_ptr(mat));
+	glUniformMatrix4fv(uniform_location, 1, transpose, glm::value_ptr(mat));
+	return true;
+}
+
+bool ShaderProgram::put_uniform_vec3(const char* uniform_name, const glm::vec3& vec) {
+	GLint uniform_location = find_uniform(uniform_name);
+	if (uniform_location == -1) {
+		CWS_LOGLN("Failed to find uniform: " << uniform_name);
+		return false;
+	}
+
+	glUniform3f(uniform_location, vec.x, vec.y, vec.z);
+	return true;
+}
+
+bool ShaderProgram::put_uniform_vec2(const char* uniform_name, const glm::vec2& vec) {
+	GLint uniform_location = find_uniform(uniform_name);
+	if (uniform_location == -1) {
+		CWS_LOGLN("Failed to find uniform: " << uniform_name);
+		return false;
+	}
+
+	glUniform2f(uniform_location, vec.x, vec.y);
+	return true;
+}
+
+bool ShaderProgram::put_uniform_float(const char* uniform_name, float value) {
+	GLint uniform_location = find_uniform(uniform_name);
+	if (uniform_location == -1) {
+		CWS_LOGLN("Failed to find uniform: " << uniform_name);
+		return false;
+	}
+
+	glUniform1f(uniform_location, value);
 	return true;
 }

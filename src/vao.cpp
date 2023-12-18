@@ -1,5 +1,5 @@
-#include "vao.h"
-#include "debug.h"
+#include "graphics/vao.h"
+#include "utils/debug.h"
 
 using namespace cws::graphics;
 

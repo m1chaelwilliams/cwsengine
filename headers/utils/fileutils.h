@@ -3,7 +3,7 @@
 
 #include <fstream>
 
-#include "debug.h"
+#include "utils/debug.h"
 
 namespace cws::utils {
 

@@ -3,7 +3,7 @@
 
 #include <glm/glm.hpp>
 
-namespace cws::renderdata {
+namespace cws::data {
 
 	struct Vertex {
 		glm::vec3 position;
